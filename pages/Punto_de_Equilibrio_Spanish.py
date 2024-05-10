@@ -16,8 +16,10 @@ st.set_page_config(
 )
 
 with st.sidebar:
-    logo_url = "https://github.com/peteciank/equilibrium_point/blob/49f98deaa0e4a86106c563bb155c45bad168d8f6/img/comercio_salvaje.jpg"
+    logo_url = "https://github.com/peteciank/equilibrium_point/blob/main/img/comercio_salvaje.jpg?raw=true"
     st.sidebar.image(logo_url)
+
+    st.write("En colaboración con: ")
     components.html(
         """
         <script src="https://platform.linkedin.com/badges/js/profile.js" async defer type="text/javascript"></script>
