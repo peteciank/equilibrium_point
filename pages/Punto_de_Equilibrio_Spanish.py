@@ -3,7 +3,6 @@ import numpy as np
 import matplotlib.pyplot as plt
 import streamlit.components.v1 as components
 
-
 st.set_page_config(
     page_title="Calculadora de Punto de Equilibrio",
     page_icon="🧊",
@@ -17,6 +16,8 @@ st.set_page_config(
 )
 
 with st.sidebar:
+    logo_url = "https://github.com/peteciank/equilibrium_point/blob/49f98deaa0e4a86106c563bb155c45bad168d8f6/img/comercio_salvaje.jpg"
+    st.sidebar.image(logo_url)
     components.html(
         """
         <script src="https://platform.linkedin.com/badges/js/profile.js" async defer type="text/javascript"></script>
