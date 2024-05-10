@@ -3,6 +3,8 @@ import numpy as np
 import matplotlib.pyplot as plt
 import streamlit.components.v1 as components
 
+logo_url = "https://scontent.cdninstagram.com/v/t51.2885-19/412793448_382962964256338_8475880849468174692_n.jpg"
+st.sidebar.image(logo_url)
 
 st.set_page_config(
     page_title="Calculadora de Punto de Equilibrio",
