@@ -57,6 +57,3 @@ if 'punto_equilibrio' in locals() and isinstance(punto_equilibrio, (int, float))
     ax.legend()
     st.pyplot(fig)
 
-# Ejecutar la aplicación Streamlit
-if __name__ == '__main__':
-    st._main_run('app.py', flag_options={})
