@@ -57,18 +57,18 @@ col1, col2, col3 = st.columns(3)
 with col1:
     st.subheader('Entradas de Costos')
     with st.expander("Desplegar para detalles de costos"):
-        costo_produccion = st.number_input('Costo de Fábrica del Producto', value=5000.0)
-        costo_marketing = st.number_input('Costo de Marketing', value=400000.0)
-        costo_empleados = st.number_input('Costo de Empleados', value=900000.0)
-        costo_almacen = st.number_input('Costo de Almacén', value=200000.0)
-        tasa_impuestos = st.number_input('Tasa de Impuestos (%)', value=0.0)
+        costo_produccion = st.number_input('Costo de Fábrica del Producto', value=5000)
+        costo_marketing = st.number_input('Costo de Marketing', value=400000)
+        costo_empleados = st.number_input('Costo de Empleados', value=900000)
+        costo_almacen = st.number_input('Costo de Almacén', value=200000)
+        tasa_impuestos = st.number_input('Tasa de Impuestos (%)', value=0)
 
 # Columna 2: Precios y Revendedores
 with col2:
     st.subheader('Canales de Venta')
     with st.expander("Desplegar para detalles de ventas"):
-        costo_reventa = st.number_input('Costo de Acceso para Revendedores', value=8000.0)
-        precio_final = st.number_input('Precio Final de Mercado', value=10000.0)
+        costo_reventa = st.number_input('Costo de Acceso para Revendedores', value=8000)
+        precio_final = st.number_input('Precio Final de Mercado', value=10000)
         num_revendedores = st.number_input('Número de Revendedores', value=200)
 
 # Columna 3: Resultados del Cálculo
@@ -78,19 +78,30 @@ with col3:
         punto_equilibrio, costo_total_con_impuestos, ingresos_totales = calcular_punto_equilibrio(
             costo_produccion, costo_marketing, costo_empleados, costo_almacen, tasa_impuestos, costo_reventa, precio_final, num_revendedores
         )
-        st.write('Punto de Equilibrio:', punto_equilibrio)
-        st.write('Costo Total con Impuestos:', costo_total_con_impuestos)
-        st.write('Ingresos Totales:', ingresos_totales)
+
+        punto_equilibrio, costo_total_con_impuestos, ingresos_totales = float(punto_equilibrio), float(costo_total_con_impuestos), float(ingresos_totales)
+
+        # f"{x:,}" or format(1234, "8.,1f")    -->    ' 1.234,0'
+        st.metric('Punto de Equilibrio:', str(int(f"{punto_equilibrio:,.0f}")) + " Unidades")
+        st.metric('Costo Total con Impuestos:', "$ " + "{:,.0f}".format(costo_total_con_impuestos).replace(',', '.')) # str(f"{costo_total_con_impuestos:'.,0f'}".format(x).replace(',', '.')))
+        st.metric('Ingresos Totales:', "$ " + "{:,.0f}".format(ingresos_totales).replace(',', '.'))
 
 # Graficar el gráfico de líneas
+import plotly.graph_objects as go
+
 if 'punto_equilibrio' in locals() and isinstance(punto_equilibrio, (int, float)):
-    fig, ax = plt.subplots()
-    cantidad = np.arange(0, int(punto_equilibrio) * 2)
-    linea_costo = costo_total_con_impuestos * np.ones_like(cantidad)
-    linea_ingresos = (precio_final - costo_reventa) * cantidad
-    ax.plot(cantidad, linea_costo, label='Costo Total con Impuestos')
-    ax.plot(cantidad, linea_ingresos, label='Ingresos Totales')
-    ax.axvline(x=punto_equilibrio, color='r', linestyle='--', label='Punto de Equilibrio')
-    ax.legend()
-    st.pyplot(fig)
+    quantity = np.arange(0, int(punto_equilibrio) * 2)
+    cost_line = costo_total_con_impuestos * np.ones_like(quantity)
+    revenue_line = (precio_final - costo_reventa) * quantity
+
+    fig = go.Figure()
+    fig.add_trace(go.Scatter(x=quantity, y=cost_line, mode='lines', name='Total Costos con Impuestos'))
+    fig.add_trace(go.Scatter(x=quantity, y=revenue_line, mode='lines', name='Ingreso Margen Total'))
+    fig.add_shape(type="line", x0=punto_equilibrio, y0=min(min(cost_line), min(revenue_line)), x1=punto_equilibrio, y1=max(max(cost_line), max(revenue_line)), line=dict(color="red", width=2, dash="dash"), name="Equilibrium Point")
+
+    fig.update_layout(title='Analisis de Costos y Facturación',
+                      xaxis_title='Cantidad',
+                      yaxis_title='Monto')
+
+    st.plotly_chart(fig)
 

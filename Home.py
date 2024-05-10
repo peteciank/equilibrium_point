@@ -59,18 +59,18 @@ col1, col2, col3 = st.columns(3)
 with col1:
     st.subheader('Cost Inputs')
     with st.expander("Expand for Cost Details"):
-        product_cost = st.number_input('Cost of Product Factory', value=5000.0)
-        marketing_cost = st.number_input('Cost of Marketing', value=400000.0)
-        employee_cost = st.number_input('Cost of Employees', value=900000.0)
-        warehouse_cost = st.number_input('Cost of Warehouse', value=200000.0)
+        product_cost = st.number_input('Cost of Product Factory', value=5000)
+        marketing_cost = st.number_input('Cost of Marketing', value=400000)
+        employee_cost = st.number_input('Cost of Employees', value=900000)
+        warehouse_cost = st.number_input('Cost of Warehouse', value=200000)
         tax_rate = st.number_input('Tax Rate (%)', value=0.0)
 
 # Column 2: Prices and Resellers
 with col2:
     st.subheader('Sales Channels')
     with st.expander("Expand for Sales Details"):
-        reseller_cost = st.number_input('Reseller Access Cost', value=8000.0)
-        final_price = st.number_input('Final Market Price', value=10000.0)
+        reseller_cost = st.number_input('Reseller Access Cost', value=8000)
+        final_price = st.number_input('Final Market Price', value=10000)
         num_resellers = st.number_input('Number of Resellers', value=200)
 
 # Column 3: Calculation Results
@@ -80,20 +80,27 @@ with col3:
         equilibrium_point, total_cost_with_tax, total_revenue = calculate_equilibrium(
             product_cost, marketing_cost, employee_cost, warehouse_cost, tax_rate, reseller_cost, final_price, num_resellers
         )
-        st.write('Equilibrium Point:', equilibrium_point)
-        st.write('Total Cost with Tax:', total_cost_with_tax)
-        st.write('Total Revenue:', total_revenue)
+        # f"{x:,}" or format(1234, "8.,1f")    -->    ' 1.234,0'
+        st.metric('Equilibium Point:', str(int(f"{equilibrium_point:,.0f}")) + " Unidades")
+        st.metric('Total cost with Taxes:', "$ " + "{:,.0f}".format(total_cost_with_tax).replace(',', '.')) # str(f"{costo_total_con_impuestos:'.,0f'}".format(x).replace(',', '.')))
+        st.metric('Total margin income:', "$ " + "{:,.0f}".format(total_revenue).replace(',', '.'))
 
 # Plotting the line graph
+import plotly.graph_objects as go
+
 if 'equilibrium_point' in locals() and isinstance(equilibrium_point, (int, float)):
-    fig, ax = plt.subplots()
     quantity = np.arange(0, int(equilibrium_point) * 2)
     cost_line = total_cost_with_tax * np.ones_like(quantity)
     revenue_line = (final_price - reseller_cost) * quantity
-    ax.plot(quantity, cost_line, label='Total Cost with Tax')
-    ax.plot(quantity, revenue_line, label='Total Revenue')
-    ax.axvline(x=equilibrium_point, color='r', linestyle='--', label='Equilibrium Point')
-    ax.legend()
-    st.pyplot(fig)
 
+    fig = go.Figure()
+    fig.add_trace(go.Scatter(x=quantity, y=cost_line, mode='lines', name='Total Cost with Tax'))
+    fig.add_trace(go.Scatter(x=quantity, y=revenue_line, mode='lines', name='Total Revenue'))
+    fig.add_shape(type="line", x0=equilibrium_point, y0=min(min(cost_line), min(revenue_line)), x1=equilibrium_point, y1=max(max(cost_line), max(revenue_line)), line=dict(color="red", width=2, dash="dash"), name="Equilibrium Point")
+
+    fig.update_layout(title='Cost and Revenue Analysis',
+                      xaxis_title='Quantity',
+                      yaxis_title='Amount')
+
+    st.plotly_chart(fig)
 
