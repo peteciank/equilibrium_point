@@ -1,4 +1,3 @@
-```markdown
 # Break-Even Point Calculator - English
 
 This Streamlit application is designed to assist small business owners in calculating the break-even point for their businesses. It allows users to input various costs and sales channel details, then calculates and displays the break-even point along with a graphical visualization.
@@ -39,9 +38,8 @@ Contributions are welcome. If you have any suggestions or improvements, please f
 This project is licensed under the MIT License. See the `LICENSE` file for more details.
 
 
-############################################################################################################
+####################################################################
 
-```markdown
 # Calculadora del Punto de Equilibrio - Spanish
 
 Esta aplicación de Streamlit está diseñada para ayudar a los pequeños empresarios a calcular el punto de equilibrio de sus negocios. Permite a los usuarios introducir diferentes costos y detalles de canales de venta, y luego calcula y muestra el punto de equilibrio junto con una visualización gráfica.
