@@ -1,0 +1,14 @@
+{
+    "app.title": "Equilibrium Point Calculator",
+    "app.product_cost": "Cost of Product Factory",
+    "app.marketing_cost": "Cost of Marketing",
+    "app.employee_cost": "Cost of Employees",
+    "app.warehouse_cost": "Cost of Warehouse",
+    "app.reseller_cost": "Reseller Access Cost",
+    "app.final_price": "Final Market Price",
+    "app.num_resellers": "Number of Resellers",
+    "app.calculate": "Calculate",
+    "app.equilibrium_point": "Equilibrium Point",
+    "app.total_cost": "Total Cost",
+    "app.total_revenue": "Total Revenue"
+}
