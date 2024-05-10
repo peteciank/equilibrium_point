@@ -1,6 +1,40 @@
 import streamlit as st
 import numpy as np
 import matplotlib.pyplot as plt
+import streamlit.components.v1 as components
+
+
+st.set_page_config(
+    page_title="Calculadora de Punto de Equilibrio",
+    page_icon="🧊",
+    layout="wide",
+    initial_sidebar_state="expanded",
+    menu_items={
+        'Get Help': 'https://es.linkedin.com/in/pedrociancaglini',
+        'Report a bug': "https://es.linkedin.com/in/pedrociancaglini",
+        'About': "# Calculadora de Punto de Equilibrio. Esta app es para calcular el punto de *equilibrio* de un negocio!"
+    }
+)
+
+with st.sidebar:
+    components.html(
+        """
+        <script src="https://platform.linkedin.com/badges/js/profile.js" async defer type="text/javascript"></script>
+        <div class="badge-base LI-profile-badge" data-locale="en_US" data-size="large" data-theme="dark" data-type="HORIZONTAL" data-vanity="pedrociancaglini" data-version="v1">
+        <a class="badge-base__link LI-simple-link" href="https://es.linkedin.com/in/pedrociancaglini/en?trk=profile-badge"></a></div>
+        """,
+    height=300,
+    )
+    st.markdown(
+        """
+        <style>
+            section[data-testid="stSidebar"] {
+                width: 400px !important; # Set the width to your desired value
+            }
+        </style>
+        """,
+        unsafe_allow_html=True,
+    )
 
 # Define the function to calculate the point of equilibrium
 def calculate_equilibrium(product_cost, marketing_cost, employee_cost, warehouse_cost, tax_rate, reseller_cost, final_price, num_resellers):
